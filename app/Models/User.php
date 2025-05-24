@@ -15,8 +15,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'telephone',
-        'ville',
+//        'telephone',
+//        'ville',
     ];
 
     // Optionnel : pour des raisons de sécurité, on peut exclure certains champs comme le mot de passe
@@ -32,4 +32,3 @@ class User extends Authenticatable
 }
 
 
- 

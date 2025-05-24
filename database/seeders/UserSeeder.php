@@ -12,12 +12,12 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::create([
-            'nom' => 'Doe',
-            'prenom' => 'John',
+            'name' => 'Doe',
+//            'prenom' => 'John',
             'email' => 'john.doe@example.com',
             'password' => Hash::make('password123'),
             'telephone' => '0123456789',
-            'ville' => 'Paris',
+//            'ville' => 'Paris',
         ]);
     }
 }

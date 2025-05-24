@@ -16,11 +16,11 @@ class DatabaseSeeder extends Seeder
         // Création d'un utilisateur avec des informations complètes
         User::create([
             'name' => 'Test User',
-            'prenom' => 'John',
+//            'prenom' => 'John',
             'email' => 'test@example.com',
             'password' => bcrypt('password123'),  // Assurez-vous que le mot de passe est crypté
-            'telephone' => '0123456789',
-            'ville' => 'Paris',
+//            'telephone' => '0123456789',
+//            'ville' => 'Paris',
         ]);
     }
 }

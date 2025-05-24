@@ -1,18 +1,6 @@
 
 <!DOCTYPE html>
-<!--
-Author: Keenthemes
-Product Name: MetronicProduct Version: 8.2.9
-Purchase: https://1.envato.market/Vm7VRE
-Website: http://www.keenthemes.com
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Dribbble: www.dribbble.com/keenthemes
-Like: www.facebook.com/keenthemes
-License: For each use you must have a valid license purchased only from above link in order to legally use the theme for your project.
--->
-<html lang="en">
-	<!--begin::Head-->
+
 	<head>
 		<title>Dashboard Admin</title>
 		<meta charset="utf-8" />
@@ -2268,7 +2256,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin:Menu item-->
 															<div class="menu-item">
 																<!--begin:Menu link-->
-																<a class="menu-link" href="http://127.0.0.1:8000/admin/users/{{ $user->id }}">
+																<a class="menu-link" href="http://127.0.0.1:8000/admin/users/">
 																	<span class="menu-bullet">
 																		<span class="bullet bullet-dot"></span>
 																	</span>
@@ -4705,16 +4693,16 @@ License: For each use you must have a valid license purchased only from above li
 												</div>
 												<!--end::Avatar-->
 												<!--begin::Username-->
-<div class="d-flex flex-column">
-    <div class="fw-bold d-flex align-items-center fs-5">
-        Super Admin <!-- Affiche le nom de l'utilisateur -->
-        <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span>
-    </div>
-    <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">
-        admin@gmail.com <!-- Affiche l'email de l'utilisateur -->
-    </a>
-</div>
-<!--end::Username-->
+			<div class="d-flex flex-column">
+				<div class="fw-bold d-flex align-items-center fs-5">
+					Super Admin <!-- Affiche le nom de l'utilisateur -->
+					<span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span>
+				</div>
+				<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">
+					admin@gmail.com <!-- Affiche l'email de l'utilisateur -->
+				</a>
+			</div>
+			<!--end::Username-->
 
 											</div>
 										</div>
@@ -7650,7 +7638,7 @@ License: For each use you must have a valid license purchased only from above li
 														<!--begin:Menu item-->
 														<div class="menu-item">
 															<!--begin:Menu link-->
-															<a class="menu-link" href="http://127.0.0.1:8000/admin/users/{{ $user->id }}">
+															<a class="menu-link" href="http://127.0.0.1:8000/admin/users/">
 																<span class="menu-bullet">
 																	<span class="bullet bullet-dot"></span>
 																</span>
