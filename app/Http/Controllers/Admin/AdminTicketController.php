@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Exception;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -29,7 +31,7 @@ class AdminTicketController extends Controller
         }
 
         $tickets = $query->paginate(10);
-        
+
         // Get users with role 'client'
         $clients = User::whereHas('role', function($query) {
             $query->where('name', 'Utilisateur');
@@ -46,7 +48,7 @@ class AdminTicketController extends Controller
     public function show(Ticket $ticket)
     {
         $ticket->load(['user', 'assignedSupport', 'replies.user']);
-        
+
         // Get users with role 'support' for the assign modal
         $supports = User::whereHas('role', function($query) {
             $query->where('name', 'support');

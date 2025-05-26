@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Support;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
@@ -42,4 +43,4 @@ class SupportProfileController extends Controller
         return redirect()->route('support.profile.show')
             ->with('success', 'Mot de passe mis à jour avec succès !');
     }
-} 
+}

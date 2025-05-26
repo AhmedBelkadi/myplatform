@@ -18,7 +18,6 @@
                 <thead>
                     <tr>
                         <th class="text-center">Nom</th>
-                        <th class="text-center">Description</th>
                         <th class="text-center">Rôles associés</th>
                         <th class="text-center">Actions</th>
                     </tr>
@@ -27,7 +26,6 @@
                     @foreach($permissions as $permission)
                         <tr>
                             <td class="text-center">{{ $permission->name }}</td>
-                            <td class="text-center">{{ $permission->description ?? '-' }}</td>
                             <td class="text-center">
                                 @foreach($permission->roles as $role)
                                     <span class="badge bg-primary rounded-pill me-1">

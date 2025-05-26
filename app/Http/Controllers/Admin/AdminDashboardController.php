@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\Ticket;
 use App\Models\User;
-use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -63,14 +64,14 @@ class AdminDashboardController extends Controller
             ->take(5)
             ->get()
             ->map(function ($user) {
-                $user->resolution_rate = $user->total_tickets > 0 
-                    ? round(($user->resolved_tickets / $user->total_tickets) * 100, 1) 
+                $user->resolution_rate = $user->total_tickets > 0
+                    ? round(($user->resolved_tickets / $user->total_tickets) * 100, 1)
                     : 0;
                 return $user;
             });
 
         // dd($weeklyTrends,$dailyActivity);
-        
+
             return view('admin.dashboard', compact(
             'stats',
             'latestTickets',

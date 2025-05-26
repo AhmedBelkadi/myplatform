@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Utilisateur;
 
+use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 
@@ -67,7 +68,7 @@ class TicketController extends Controller
         if ($ticket->user_id !== auth()->id()) {
             abort(403);
         }
-        
+
         $ticket->load(['assignedSupport', 'replies.user']);
         return view('regular-user.tickets.show', compact('ticket'));
     }

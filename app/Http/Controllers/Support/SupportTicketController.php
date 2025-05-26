@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Support;
 
+use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use App\Models\TicketReply;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class SupportTicketController extends Controller
         }
 
         $tickets = $query->latest()->paginate(10);
-            
+
         return view('support.tickets.index', compact('tickets'));
     }
 
