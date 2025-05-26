@@ -83,8 +83,7 @@ class SupportTicketController extends Controller
         }
 
         $ticket->update([
-            'status' => 'resolved',
-            'resolved_at' => now()
+            'status' => 'resolved'
         ]);
 
         return redirect()->route('support.tickets.index')->with('success', 'Ticket marked as resolved');

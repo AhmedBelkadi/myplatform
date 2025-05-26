@@ -55,12 +55,9 @@ class User extends Authenticatable
         return $this->role && $this->role->name === $roleName;
     }
 
-    public function hasPermission($permissionName)
+    public function hasPermission($permission)
     {
-        if ($this->role && $this->role->permissions) {
-            return $this->role->permissions->contains('name', $permissionName);
-        }
-        return false;
+        return $this->role && $this->role->permissions->contains('name', $permission);
     }
 }
 

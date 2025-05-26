@@ -58,6 +58,43 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 @include("layouts.templete-scripts")
 <!-- ApexCharts -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    // Global Toastr configuration
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-bottom-right",
+        "timeOut": "5000"
+    };
+</script>
+
+@if(\Illuminate\Support\Facades\Session::has('success'))
+    <script>
+        toastr.success("{{\Illuminate\Support\Facades\Session::get('success')}}");
+    </script>
+@endif
+
+@if(\Illuminate\Support\Facades\Session::has('error'))
+    <script>
+        toastr.error("{{\Illuminate\Support\Facades\Session::get('error')}}");
+    </script>
+@endif
+
+@if(\Illuminate\Support\Facades\Session::has('warning'))
+    <script>
+        toastr.warning("{{\Illuminate\Support\Facades\Session::get('warning')}}");
+    </script>
+@endif
+
+@if(\Illuminate\Support\Facades\Session::has('info'))
+    <script>
+        toastr.info("{{\Illuminate\Support\Facades\Session::get('info')}}");
+    </script>
+@endif
+
 @yield("scripts")
 
 </body>

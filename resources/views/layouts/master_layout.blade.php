@@ -85,11 +85,31 @@
 <!-- Page JS -->
 <script src="{{asset("assets4")}}/js/dashboards-analytics.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-@if(\Illuminate\Support\Facades\Session::has("message"))
+@if(\Illuminate\Support\Facades\Session::has('success'))
     <script>
-        toastr.options = { "progressBar":true , "closeButton":true }
-        toastr.success("{{\Illuminate\Support\Facades\Session::get("message")}}")
-        toastr.error("{{\Illuminate\Support\Facades\Session::get("message")}}")
+        toastr.options = { "progressBar": true, "closeButton": true };
+        toastr.success("{{\Illuminate\Support\Facades\Session::get('success')}}");
+    </script>
+@endif
+
+@if(\Illuminate\Support\Facades\Session::has('error'))
+    <script>
+        toastr.options = { "progressBar": true, "closeButton": true };
+        toastr.error("{{\Illuminate\Support\Facades\Session::get('error')}}");
+    </script>
+@endif
+
+@if(\Illuminate\Support\Facades\Session::has('warning'))
+    <script>
+        toastr.options = { "progressBar": true, "closeButton": true };
+        toastr.warning("{{\Illuminate\Support\Facades\Session::get('warning')}}");
+    </script>
+@endif
+
+@if(\Illuminate\Support\Facades\Session::has('info'))
+    <script>
+        toastr.options = { "progressBar": true, "closeButton": true };
+        toastr.info("{{\Illuminate\Support\Facades\Session::get('info')}}");
     </script>
 @endif
 @yield("scripts")
