@@ -7,18 +7,36 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+// ADMIN ROUTES
+Route::middleware(['auth', 'role:Administrateur'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+        ->name('dashboard')
+        ->middleware(['permission:view_admin_dashboard']);
 
-    Route::resource('users', UserController::class);
-    Route::resource('roles', RoleController::class);
-    Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.permissions.update');
+    Route::middleware('permission:manage_users')->group(function () {
+        Route::resource('users', UserController::class);
+    });
 
-    Route::resource('permissions', PermissionController::class);
-    Route::put('/permissions/{permission}/roles', [PermissionController::class, 'assignRoles'])->name('permissions.assign-roles');
+    Route::middleware('permission:manage_roles')->group(function () {
+        Route::resource('roles', RoleController::class);
+        Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.permissions.update');
+    });
 
-    Route::get('/tickets', [AdminTicketController::class, 'index'])->name('tickets.index');
-    Route::get('/tickets/{ticket}', [AdminTicketController::class, 'show'])->name('tickets.show');
-    Route::post('/tickets/{ticket}/assign', [AdminTicketController::class, 'assign'])->name('tickets.assign');
-    Route::put('/tickets/{ticket}/close', [AdminTicketController::class, 'close'])->name('tickets.close');
+    Route::middleware('permission:manage_permissions')->group(function () {
+        Route::resource('permissions', PermissionController::class);
+        Route::put('/permissions/{permission}/roles', [PermissionController::class, 'assignRoles'])->name('permissions.assign-roles');
+    });
+
+    Route::middleware('permission:view_all_tickets')->group(function () {
+        Route::get('/tickets', [AdminTicketController::class, 'index'])->name('tickets.index');
+        Route::get('/tickets/{ticket}', [AdminTicketController::class, 'show'])->name('tickets.show');
+    });
+
+    Route::post('/tickets/{ticket}/assign', [AdminTicketController::class, 'assign'])
+        ->name('tickets.assign')
+        ->middleware('permission:assign_ticket');
+
+    Route::put('/tickets/{ticket}/close', [AdminTicketController::class, 'close'])
+        ->name('tickets.close')
+        ->middleware('permission:close_ticket');
 });

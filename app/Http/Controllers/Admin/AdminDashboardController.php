@@ -13,6 +13,10 @@ class AdminDashboardController extends Controller
 {
     public function index()
     {
+
+        // dd(app()->make(\App\Http\Kernel::class)->getMiddlewareAliases());
+        // dd(app()->make(\App\Http\Kernel::class)->getMiddleware());
+
         // Basic stats
         $stats = [
             'total_tickets' => Ticket::count(),

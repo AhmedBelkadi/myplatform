@@ -87,27 +87,18 @@
             </li>
         @endif
 
-        <li class="menu-item ">
+        <li class="menu-item">
             <hr>
-            <form action="{{ route('logout') }}" method="POST" class="menu-link bg-transparent border-0">
+            <form action="{{ route('logout') }}" method="POST" class=" border-0">
                 @csrf
-                <button type="submit" class="menu-link border-0 bg-transparent w-100 d-flex align-items-center px-0">
+                <button type="submit" class="menu-link border-0 bg-transparent w-100 d-flex align-items-center pl-2">
                     <i class='bx bx-log-out menu-icon tf-icons'></i>
                     <div data-i18n="Analytics">Déconnexion</div>
                 </button>
             </form>
         </li>
 
-        <!-- Logout Button
-        <li class="menu-item ">
-            <form action="{{ route('logout') }}" method="POST" class="menu-link">
-                @csrf
-                <button class="bg-danger" type="submit" style="background: none; border: none; width: 100%; text-align: left; padding: 0.625rem 1rem;"> 
-                    <i class="menu-icon tf-icons bx bx-log-out"></i>
-                    <div>Déconnexion</div>
-                </button>
-            </form>
-        </li> -->
+   
     </ul>
 
     <!-- User Profile Info -->

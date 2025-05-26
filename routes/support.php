@@ -5,14 +5,28 @@ use App\Http\Controllers\Support\SupportTicketController;
 use App\Http\Controllers\Support\SupportProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('support')->name('support.')->group(function () {
-    Route::get('/dashboard', [SupportDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/tickets', [SupportTicketController::class, 'index'])->name('tickets.index');
-    Route::get('/tickets/{ticket}', [SupportTicketController::class, 'show'])->name('tickets.show');
-    Route::post('/tickets/{ticket}/reply', [SupportTicketController::class, 'reply'])->name('tickets.reply');
-    Route::post('/tickets/{ticket}/resolve', [SupportTicketController::class, 'resolve'])->name('tickets.resolve');
+// SUPPORT ROUTES
+Route::middleware(['auth', 'role:Support'])->prefix('support')->name('support.')->group(function () {
+    Route::get('/dashboard', [SupportDashboardController::class, 'index'])
+        ->name('dashboard')
+        ->middleware('permission:view_support_dashboard');
 
-    Route::get('/profile', [SupportProfileController::class, 'show'])->name('profile.show');
-    Route::put('/profile', [SupportProfileController::class, 'update'])->name('profile.update');
-    Route::put('/profile/password', [SupportProfileController::class, 'updatePassword'])->name('profile.password');
+    Route::middleware('permission:view_all_tickets')->group(function () {
+        Route::get('/tickets', [SupportTicketController::class, 'index'])->name('tickets.index');
+        Route::get('/tickets/{ticket}', [SupportTicketController::class, 'show'])->name('tickets.show');
+    });
+
+    Route::post('/tickets/{ticket}/reply', [SupportTicketController::class, 'reply'])
+        ->name('tickets.reply')
+        ->middleware('permission:reply_ticket');
+
+    Route::post('/tickets/{ticket}/resolve', [SupportTicketController::class, 'resolve'])
+        ->name('tickets.resolve')
+        ->middleware('permission:close_ticket');
+
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [SupportProfileController::class, 'show'])->name('show')->middleware('permission:view_profile');
+        Route::put('/', [SupportProfileController::class, 'update'])->name('update')->middleware('permission:update_profile');
+        Route::put('/password', [SupportProfileController::class, 'updatePassword'])->name('password')->middleware('permission:update_password');
+    });
 });
