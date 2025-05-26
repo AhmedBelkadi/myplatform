@@ -1,43 +1,82 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <h2 class="text-3xl font-semibold text-gray-800 mb-6">Modifier le rôle : {{ $role->name }}</h2>
-            
-            <form action="{{ route('admin.roles.update', $role->id) }}" method="POST" class="bg-white p-6 rounded-lg shadow-md">
-                @csrf
-                @method('PUT')
-                
-                <div class="form-group mb-4">
-                    <label for="name" class="block text-sm font-medium text-gray-700">Nom du rôle</label>
-                    <input type="text" name="name" id="name" class="form-control block w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                           value="{{ old('name', $role->name) }}" required>
-                </div>
-
-                <div class="form-group mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Permissions</label>
-                    <div class="border p-3 rounded-md bg-gray-50">
-                        @foreach ($permissions as $permission)
-                        <div class="form-check mb-3">
-                            <input type="checkbox" name="permissions[]" 
-                                   value="{{ $permission->id }}" class="form-check-input h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                                   id="perm_{{ $permission->id }}"
-                                   @if(in_array($permission->id, $role->permissions->pluck('id')->toArray())) checked @endif>
-                            <label class="form-check-label text-gray-700 ml-2" for="perm_{{ $permission->id }}">
-                                {{ $permission->name }}
-                            </label>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-primary w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
-                    Mettre à jour le rôle
-                </button>
-            </form>
+<div class="modal fade" id="modifierModal{{$role->id}}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalCenterTitle">Modifier le role</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
-    </div>
+    <form method="post" action="{{route("admin.roles.update",$role->id)}}">
+        @method('PUT')
+               @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="nameBasic" class="form-label">Name</label>
+                                <input type="text" name="name"  value="{{!old("name") ? $role->name : old("name")}}" id="nameBasic" class="form-control" placeholder="Enter name" />
+                                @error('name')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-success">Modifier</button>
+                    </div>
+{{--<div class="row">--}}
+{{--    <div class="col mb-3">--}}
+{{--        <label for="nameBasic" class="form-label">Apogee</label>--}}
+{{--        <input type="text" name="apogee"  value="{{!old("apogee") ? $role->apogee : old("apogee")}}" id="nameBasic" class="form-control" placeholder="Enter apogee" />--}}
+{{--        @error('apogee')--}}
+{{--        <span class="text-danger">{{ $message }}</span>--}}
+{{--        @enderror--}}
+
+{{--    </div>--}}
+
+
+
+
+
+
+
+
+{{--                <div class="row g-2">--}}
+{{--                    <div class="col mb-0">--}}
+{{--                        <div class=" mt-2 mb-3">--}}
+{{--                            <label for="nameBasic" class="form-label">Filiere</label>--}}
+{{--                            <select name="id_filiere" id="id_filiere" class="form-select form-select">--}}
+{{--                                <option value="{{ $role->filiere->id }}">{{ $role->filiere->name }}</option>--}}
+{{--                                    @foreach($filieres as $filiere)--}}
+{{--                                    @if($filiere->id==$role->filiere->id)--}}
+{{--                                        @continue--}}
+{{--                                    @endif--}}
+{{--                                <option value="{{ $filiere->id }}" {{ old('id_filiere') == $filiere->id ? 'selected' : '' }}>--}}
+{{--                                        {{ $filiere->name }}--}}
+{{--                                    </option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                            @error('id_filiere')--}}
+{{--                            <span class="text-danger">{{ $message }}</span>--}}
+{{--                            @enderror--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+
+
+
+
+
+
+
+        </form>
+  </div>
 </div>
-@endsection
+</div>

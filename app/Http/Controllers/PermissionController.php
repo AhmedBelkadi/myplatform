@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+use App\Models\Permission;
+use App\Models\Role;
 
 class PermissionController extends Controller
 {
@@ -12,13 +12,8 @@ class PermissionController extends Controller
    // Page qui affiche toutes les permissions et rôles associés
 public function index()
 {
-    // Récupérer toutes les permissions
-    $permissions = Permission::all();
-
-    // Récupérer tous les rôles avec leurs permissions
-    $roles = Role::with('permissions')->get();
-
-    // Retourner la vue avec les permissions et rôles
+    $permissions = Permission::with('roles')->get();
+    $roles = Role::all();
     return view('admin.permissions.index', compact('permissions', 'roles'));
 }
 
@@ -53,20 +48,62 @@ public function index()
     // Créer une nouvelle permission
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|unique:permissions,name',
+        $validated = $request->validate([
+            'name' => 'required|string|unique:permissions,name|max:255'
         ]);
 
-        Permission::create(['name' => $request->name]);
-
-        return redirect()->route('admin.permissions.index')->with('success', 'Permission créée avec succès.');
+        try {
+            Permission::create($validated);
+            return redirect()->route('admin.permissions.index')
+                ->with('success', 'Permission créée avec succès !');
+        } catch (Exception $e) {
+            return back()->withInput()
+                ->withErrors(['error' => 'Erreur lors de la création de la permission : ' . $e->getMessage()]);
+        }
     }
 
     // Supprimer une permission
     public function destroy(Permission $permission)
     {
-        $permission->delete();
+        try {
+            $permission->delete();
+            return redirect()->route('admin.permissions.index')
+                ->with('success', 'Permission supprimée avec succès !');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Erreur lors de la suppression de la permission : ' . $e->getMessage()]);
+        }
+    }
 
-        return redirect()->route('admin.permissions.index')->with('success', 'Permission supprimée avec succès.');
+    public function update(Request $request, Permission $permission)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|unique:permissions,name,' . $permission->id . '|max:255',
+        ]);
+
+        try {
+            $permission->update($validated);
+            return redirect()->route('admin.permissions.index')
+                ->with('success', 'Permission mise à jour avec succès !');
+        } catch (Exception $e) {
+            return back()->withInput()
+                ->withErrors(['error' => 'Erreur lors de la mise à jour de la permission : ' . $e->getMessage()]);
+        }
+    }
+
+    public function assignRoles(Request $request, Permission $permission)
+    {
+        $request->validate([
+            'roles' => 'array',
+            'roles.*' => 'exists:roles,id'
+        ]);
+
+        try {
+            $roles = $request->input('roles', []);
+            $permission->roles()->sync($roles);
+            return redirect()->route('admin.permissions.index')
+                ->with('success', 'Rôles assignés avec succès !');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Erreur lors de l\'assignation des rôles : ' . $e->getMessage()]);
+        }
     }
 }

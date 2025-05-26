@@ -1,61 +1,50 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    /*
-    |----------------------------------------------------------------------
-    | Login Controller
-    |----------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
-    use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    // On supprime la ligne $redirectTo car on va la gérer nous-même
-    // protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function showLoginForm()
     {
-        $this->middleware('guest')->except('logout');
-        $this->middleware('auth')->only('logout');
+        return view('auth.login');
     }
 
-    /**
-     * Overriding the authenticated method to check the user's role
-     * and redirect accordingly.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\User $user
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    protected function authenticated(Request $request, $user)
+    public function login(Request $request)
     {
-        // Vérifier si l'utilisateur a un rôle 'admin'
-        if ($user->hasRole('admin')) {
-            // Rediriger vers le dashboard admin
-            return redirect()->route('admin.dashboard');
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            // Redirect based on user role
+            $user = Auth::user();
+            
+            if ($user->hasRole('Administrateur')) {
+                return redirect()->intended('/admin/dashboard');
+            } elseif ($user->hasRole('Support')) {
+                return redirect()->intended('/support/dashboard');
+            } else {
+                return redirect()->intended('/tickets');
+            }
         }
 
-        // Sinon, rediriger vers le dashboard utilisateur normal
-        return redirect()->route('user.dashboard');
+        return back()->withErrors([
+            'email' => 'Les identifiants fournis ne correspondent pas à nos enregistrements.',
+        ])->onlyInput('email');
     }
-}
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
+    }
+} 

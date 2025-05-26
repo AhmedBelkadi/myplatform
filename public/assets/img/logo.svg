@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 150">
+  <style>
+    .logo-text { font-family: Arial, sans-serif; font-weight: bold; }
+    .primary { fill: #042552; }
+    .secondary { fill: #909ED8; }
+  </style>
+  <g transform="translate(10, 100)">
+    <!-- Support icon -->
+    <path class="secondary" d="M45 -50 C45 -65, 35 -75, 20 -75 L-20 -75 C-35 -75, -45 -65, -45 -50 L-45 50 C-45 65, -35 75, -20 75 L20 75 C35 75, 45 65, 45 50Z" />
+    <path class="primary" d="M0 -30 C-20 -30, -35 -15, -35 5 C-35 25, -20 40, 0 40 C20 40, 35 25, 35 5 C35 -15, 20 -30, 0 -30Z M0 50 C-25 50, -45 30, -45 5 C-45 -20, -25 -40, 0 -40 C25 -40, 45 -20, 45 5 C45 30, 25 50, 0 50Z" />
+    
+    <!-- Text -->
+    <text x="60" y="25" class="logo-text primary" font-size="60">Support</text>
+    <text x="60" y="50" class="logo-text secondary" font-size="24">Ticket System</text>
+  </g>
+</svg> 

@@ -1,33 +1,36 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-6">Créer un nouveau rôle</h1>
-    
-    <form action="{{ route('admin.roles.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow-lg">
-        @csrf
-        
-        <div class="mb-4">
-            <label for="name" class="block text-gray-700 font-medium mb-2">Nom du rôle</label>
-            <input type="text" name="name" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#etudiantsModal"><i class="bx bx-plus me-sm-1"></i>Ajouter un role</button>
+<div class="modal fade" id="etudiantsModal" tabindex="-1" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">Ajouter un Role</h5>
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            ></button>
         </div>
-        
-        <div class="mb-6">
-            <label class="block text-gray-700 font-medium mb-2">Permissions</label>
-            <div class="border border-gray-300 rounded-lg p-4">
-                @foreach($permissions as $permission)
-                <div class="flex items-center mb-3">
-                    <input type="checkbox" name="permissions[]" value="{{ $permission->id }}" 
-                           id="perm_{{ $permission->id }}" class="mr-2 rounded-lg border-gray-300 focus:ring-blue-500">
-                    <label for="perm_{{ $permission->id }}" class="text-gray-600">{{ $permission->name }}</label>
+           <form method="post" action="">
+               @csrf
+                <div class="modal-body">
+                       <div class="row">
+                           <div class="col mb-3">
+                               <label for="nameBasic" class="form-label">Name</label>
+                               <input type="text" value="{{ old("name_a") }}" name="name_a" id="nameBasic" class="form-control" placeholder="Enter name" />
+                               @error("name_a")
+                               <span class="text-danger" >{{$message}}</span>
+                               @enderror
+                           </div>
+                       </div>
                 </div>
-                @endforeach
-            </div>
-        </div>
-        
-        <button type="submit" class="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600">
-            Créer le rôle
-        </button>
-    </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </div>
+        </form>
+    </div>
 </div>
-@endsection
+</div>

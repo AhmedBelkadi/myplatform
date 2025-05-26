@@ -1,26 +1,27 @@
 <?php
-// database/seeders/DatabaseSeeder.php
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\Ticket;
+use App\Models\TicketReply;
+use Spatie\Permission\Models\Role;
+use Faker\Factory as Faker;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // Création d'un utilisateur avec des informations complètes
-        User::create([
-            'name' => 'Test User',
-            'prenom' => 'John',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password123'),  // Assurez-vous que le mot de passe est crypté
-            'telephone' => '0123456789',
-            'ville' => 'Paris',
+        $this->call([
+            RoleSeeder::class,
+            RolesAndPermissionsSeeder::class,
+            UserSeeder::class,
+            TicketSeeder::class,
+            ReplySeeder::class,
         ]);
     }
+    
 }
+
