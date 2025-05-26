@@ -1,149 +1,79 @@
-@extends('layouts.list')
-@section('content')
-<style>
-/* Styles généraux */
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
-}
-
-/* Conteneur principal */
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-/* En-tête */
-.page-title {
-  font-size: 24px;
-  color: #2c3e50;
-  margin-bottom: 25px;
-}
-
-/* Message de succès */
-.alert-success {
-  background-color: #d4edda;
-  color: #155724;
-  padding: 12px 15px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-}
-
-/* Formulaire */
-.user-form {
-  background-color: white;
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #2c3e50;
-}
-
-.form-control {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 15px;
-}
-
-.form-control:focus {
-  border-color: #3498db;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-}
-
-.error-message {
-  color: #e74c3c;
-  font-size: 13px;
-  margin-top: 5px;
-}
-
-/* Bouton de soumission */
-.btn-submit {
-  background-color: #3498db;
-  color: white;
-  padding: 10px 18px;
-  border-radius: 4px;
-  border: none;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.btn-submit:hover {
-  background-color: #2980b9;
-}
-</style>
-
-<div class="container">
-    <h1 class="page-title">Créer un Nouvel Utilisateur</h1>
-    
-    @if(session('success'))
-        <div class="alert-success">
-            {{ session('success') }}
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#etudiantsModal"><i class="bx bx-plus me-sm-1"></i>Ajouter un utilisateur</button>
+<div class="modal fade" id="etudiantsModal" tabindex="-1" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">Ajouter un Utilisateur</h5>
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            ></button>
         </div>
-    @endif
-    
-    <form action="{{ route('admin.users.store') }}" method="POST" class="user-form">
-        @csrf
-        
-        <div class="form-group">
-            <label for="name" class="form-label">Nom</label>
-            <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required>
-            @error('name')
-                <div class="error-message">{{ $message }}</div>
-            @enderror
-        </div>
-        
-        <div class="form-group">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" name="email" class="form-control" value="{{ old('email') }}" required>
-            @error('email')
-                <div class="error-message">{{ $message }}</div>
-            @enderror
-        </div>
-        
-        <div class="form-group">
-            <label for="password" class="form-label">Mot de passe</label>
-            <input type="password" id="password" name="password" class="form-control" required>
-            @error('password')
-                <div class="error-message">{{ $message }}</div>
-            @enderror
-        </div>
-        
-        <div class="form-group">
-            <label for="password_confirmation" class="form-label">Confirmer le mot de passe</label>
-            <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="telephone" class="form-label">Téléphone</label>
-            <input type="text" id="telephone" name="telephone" class="form-control" value="{{ old('telephone') }}">
-            @error('telephone')
-                <div class="error-message">{{ $message }}</div>
-            @enderror
-        </div>
-        
-        <div class="form-group">
-            <label for="ville" class="form-label">Ville</label>
-            <input type="text" id="ville" name="ville" class="form-control" value="{{ old('ville') }}">
-            @error('ville')
-                <div class="error-message">{{ $message }}</div>
-            @enderror
-        </div>
-        
-        <button type="submit" class="btn-submit">Créer l'utilisateur</button>
-    </form>
+           <form method="post" action="{{route("admin.users.store")}}">
+               @csrf
+                <div class="modal-body">
+                       <div class="row">
+                           <div class="col mb-3">
+                               <label for="nameBasic" class="form-label">Name</label>
+                               <input type="text" value="{{ old("name_a") }}" name="name_a" id="nameBasic" class="form-control" placeholder="Enter name" />
+                               @error("name_a")
+                               <span class="text-danger" >{{$message}}</span>
+                               @enderror
+                           </div>
+                       </div>
+
+                    <div class="row g-2">
+                        <div class="col mb-0">
+                            <label for="emailBasic" class="form-label">Email</label>
+                            <input type="email" id="emailBasic"  value="{{ old("email_a") }}" name="email_a" class="form-control" placeholder="enter email" />
+                            @error("email_a")
+                            <span class="text-danger" >{{$message}}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3 mt-3">
+                                <label for="roleSelect" class="form-label">
+                                    <i class='bx bx-user-pin me-1'></i>Rôle
+                                </label>
+                                <select name="role_id" id="roleSelect" class="form-select">
+                                    <option value="">Sélectionner un rôle</option>
+                                    @foreach($roles as $role)
+                                        <option value="{{ $role->id }}">
+                                            {{ $role->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('role_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                    <div class="row g-2">
+                        <div class="col mb-3">
+                            <label for="emailBasic" class="form-label">password</label>
+                            <input type="password" id="emailBasic"   value="{{ old("password") }}" name="password" class="form-control" placeholder="Enter Password" />
+                            @error("password")<span class="text-danger" >{{$message}}</span>@enderror
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col mb-0">
+                            <label for="emailBasic" class="form-label">Repeat password</label>
+                            <input type="password" id="emailBasic"   value="{{ old("password_confirmation") }}" name="password_confirmation" class="form-control" placeholder="Repeat Password" />
+                            @error("password_confirmation")<span class="text-danger" >{{$message}}</span>@enderror
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </div>
+        </form>
+    </div>
 </div>
-@endsection
+</div>

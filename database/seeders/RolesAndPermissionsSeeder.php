@@ -3,65 +3,46 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Role;
+use App\Models\Permission;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        // 🔹 Créer les rôles
-        $admin = Role::firstOrCreate(['name' => 'admin']);
-        $supporter = Role::firstOrCreate(['name' => 'supporter']);
-        $user = Role::firstOrCreate(['name' => 'user']);
+        // 1. Create Roles
+        $adminRole = Role::where('name', 'Administrateur')->first();
+        $supportRole = Role::where('name', 'Support')->first();
+        $userRole = Role::where('name', 'Utilisateur')->first();
 
-        // 🔐 Créer les permissions
+        // 2. Permissions
         $permissions = [
-            'manage users',
-            'manage roles',
-            'manage permissions',
-            'view posts',
+            'create_ticket',
+            'view_all_tickets',
+            'assign_ticket',
+            'manage_users',
+            'manage_roles',
+            'manage_permissions',
+            'close_ticket',
+            'reply_ticket',
         ];
 
         foreach ($permissions as $perm) {
-            Permission::firstOrCreate(['name' => $perm]);
+            Permission::create([
+                'name' => $perm
+            ]);
         }
 
-        // 🔗 Attribuer permissions
-        $admin->syncPermissions($permissions);
-        $supporter->syncPermissions(['view posts']);
-        // Le rôle user n’a pas besoin de permissions ici
-
-        // 👤 Créer l'admin
-        $adminUser = User::firstOrCreate(
-            ['email' => 'admin@gmail.com'],
-            [
-                'name' => 'Super Admin',
-                'password' => Hash::make('admin123'),
-            ]
-        );
-        $adminUser->assignRole('admin');
-
-        // 👤 Créer le supporter
-        $supportUser = User::firstOrCreate(
-            ['email' => 'supporter@gmail.com'],
-            [
-                'name' => 'Support User',
-                'password' => Hash::make('support123'),
-            ]
-        );
-        $supportUser->assignRole('supporter');
-
-        // 👤 Créer l'utilisateur simple
-        $basicUser = User::firstOrCreate(
-            ['email' => 'user@gmail.com'],
-            [
-                'name' => 'Basic User',
-                'password' => Hash::make('user123'),
-            ]
-        );
-        $basicUser->assignRole('user');
+        // 3. Assign permissions to roles
+        $adminRole->permissions()->attach(Permission::pluck('id')->toArray()); // all perms
+        $supportRole->permissions()->attach([
+            Permission::where('name', 'view_all_tickets')->first()->id,
+            Permission::where('name', 'assign_ticket')->first()->id,
+            Permission::where('name', 'close_ticket')->first()->id,
+            Permission::where('name', 'reply_ticket')->first()->id,
+        ]);
+        $userRole->permissions()->attach([
+            Permission::where('name', 'create_ticket')->first()->id,
+        ]);
     }
 }

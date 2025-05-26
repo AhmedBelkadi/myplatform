@@ -1,25 +1,44 @@
-{{-- resources/views/admin/roles/create.blade.php --}}
-@extends('layouts.admin') <!-- Inclure le layout général -->
+<div class="modal fade" id="createPermissionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white" id="modalCenterTitle">
+                    <i class='bx bx-key me-2'></i>Ajouter une permission
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-@section('content')
-    <h1>Créer un rôle</h1>
-    
-    <form action="{{ route('admin.roles.store') }}" method="POST">
-        @csrf
-        <div class="form-group">
-            <label for="name">Nom du rôle</label>
-            <input type="text" name="name" id="name" class="form-control" required>
+            <form method="post" action="{{ route('admin.permissions.store') }}">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="name" class="form-label">
+                                <i class='bx bx-tag me-1'></i>Nom de la permission
+                            </label>
+                            <input type="text" 
+                                   name="name" 
+                                   id="name" 
+                                   class="form-control @error('name') is-invalid @enderror" 
+                                   placeholder="Entrer le nom de la permission"
+                                   value="{{ old('name') }}" 
+                                   required />
+                            @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class='bx bx-x me-1'></i>Annuler
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class='bx bx-save me-1'></i>Enregistrer
+                    </button>
+                </div>
+            </form>
         </div>
-
-        <div class="form-group">
-            <label for="permissions">Permissions</label>
-            <select name="permissions[]" id="permissions" class="form-control" multiple required>
-                @foreach ($permissions as $permission)
-                    <option value="{{ $permission->id }}">{{ $permission->name }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Créer le rôle</button>
-    </form>
-@endsection
+    </div>
+</div>
